@@ -1,0 +1,168 @@
+{
+  "name": "EliteCore Creative Agency",
+  "type": "Creative Technology, AI & Youth Empowerment Agency",
+  "tagline": "Empowering Youth Through Digital Innovation",
+
+  "founder": {
+    "name": "Emmanuel Munga",
+    "alias": "Munga Graphics",
+    "role": "Founder & Creative Director"
+  },
+
+  "core_team": [
+    { "name": "Emmanuel Munga", "role": "Founder & Creative Director" },
+    { "name": "Emmanuel Faraja", "role": "Technical & Development Lead" },
+    { "name": "Nelly", "role": "Design & Creative Strategy" },
+    { "name": "Victor Mwangi", "role": "Operations & Systems Management" },
+    { "name": "Ian Githinji", "role": "Youth Programs & Community Engagement" }
+  ],
+
+  "mission": "To empower young people with digital skills, creative tools, and technology-driven opportunities that transform them into creators, entrepreneurs, and problem solvers.",
+
+  "vision": "To become Africa’s leading creative-tech innovation hub, building future-ready youth and scalable digital solutions globally.",
+
+  "why_we_exist": "EliteCore was created to solve youth unemployment, lack of digital skills, and limited access to modern tech opportunities. We believe talent exists everywhere, but opportunity does not. We bridge that gap.",
+
+  "what_we_do": {
+    "overview": "We are a full-stack creative and technology agency offering digital services, training, and AI solutions.",
+    "main_focus": [
+      "Digital transformation for businesses",
+      "Youth mentorship and training",
+      "AI-powered solutions",
+      "Creative branding and design",
+      "Software and web development"
+    ]
+  },
+
+  "services": {
+    "web_development": {
+      "description": "We build modern websites, dashboards, and SaaS platforms.",
+      "pricing": {
+        "basic_website": "Ksh 5,000 - Ksh 15,000",
+        "business_website": "Ksh 15,000 - Ksh 40,000",
+        "advanced_saas_platform": "Ksh 50,000 - Ksh 250,000",
+        "maintenance": "Ksh 2,000 - Ksh 10,000 monthly"
+      }
+    },
+
+    "mobile_app_development": {
+      "description": "Android and cross-platform mobile apps.",
+      "pricing": {
+        "simple_app": "Ksh 20,000 - Ksh 60,000",
+        "business_app": "Ksh 60,000 - Ksh 150,000",
+        "advanced_app": "Ksh 150,000 - Ksh 500,000"
+      }
+    },
+
+    "graphic_design": {
+      "description": "Brand identity, posters, logos, social media designs.",
+      "pricing": {
+        "logo_design": "Ksh 1,000 - Ksh 5,000",
+        "branding_package": "Ksh 5,000 - Ksh 20,000",
+        "social_media_package": "Ksh 2,000 - Ksh 10,000",
+        "full_brand_identity": "Ksh 15,000 - Ksh 50,000"
+      }
+    },
+
+    "ai_solutions": {
+      "description": "Custom AI chatbots, automation systems, business intelligence tools.",
+      "pricing": {
+        "basic_ai_chatbot": "Ksh 10,000 - Ksh 30,000",
+        "business_ai_system": "Ksh 30,000 - Ksh 100,000",
+        "enterprise_ai_solution": "Ksh 100,000 - Ksh 500,000"
+      }
+    },
+
+    "digital_marketing": {
+      "description": "Online growth, ads, and brand visibility.",
+      "pricing": {
+        "starter_campaign": "Ksh 5,000 - Ksh 15,000",
+        "growth_campaign": "Ksh 15,000 - Ksh 50,000",
+        "enterprise_marketing": "Ksh 50,000 - Ksh 200,000"
+      }
+    },
+
+    "training_and_mentorship": {
+      "description": "We train youth in tech, design, AI, and entrepreneurship.",
+      "pricing": {
+        "basic_course": "Ksh 1,000 - Ksh 5,000",
+        "professional_training": "Ksh 5,000 - Ksh 20,000",
+        "elite_mentorship_program": "Ksh 20,000 - Ksh 60,000",
+        "scholarship_option": "Available for selected youth"
+      }
+    }
+  },
+
+  "youth_empowerment": {
+    "focus": "Transforming unemployed youth into skilled digital professionals.",
+    "programs": [
+      "EliteCore Academy Training",
+      "Freelancing Bootcamps",
+      "AI & Tech Skills Development",
+      "Startup Mentorship Program"
+    ],
+    "goal": "Turn job seekers into job creators"
+  },
+
+  "trust_and_credibility": {
+    "why_trust_us": [
+      "We are youth-driven and community-based",
+      "We focus on real skill development, not theory",
+      "We provide portfolio-based training",
+      "We build real projects, not fake certificates",
+      "We offer ongoing support after service delivery"
+    ],
+    "client_assurance": [
+      "Transparent pricing",
+      "Project milestone updates",
+      "Direct communication with team",
+      "Revision support",
+      "Long-term partnership mindset"
+    ]
+  },
+
+  "how_we_convince_clients": {
+    "approach": [
+      "We analyze your problem before selling anything",
+      "We show real examples of similar solutions",
+      "We focus on ROI (return on investment)",
+      "We offer scalable solutions based on budget",
+      "We build trust before payment pressure"
+    ],
+    "message_style": "We don't just sell services — we build long-term digital growth systems."
+  },
+
+  "funding_model": {
+    "income_streams": [
+      "Client service payments",
+      "Training programs",
+      "SaaS AI tools",
+      "Freelance commission systems",
+      "Partnerships and sponsorships"
+    ],
+    "support_options": [
+      "Donations",
+      "Innovation grants",
+      "Corporate partnerships",
+      "Mentorship sponsorships"
+    ]
+  },
+
+  "future_vision": {
+    "goal": "Become a global African tech innovation hub",
+    "expansion_plans": [
+      "EliteCore Academy full online platform",
+      "Freelance marketplace for youth",
+      "AI SaaS ecosystem",
+      "Physical innovation hubs in cities",
+      "Startup incubation program"
+    ]
+  },
+
+  "contact": {
+    "email": "emmanuelmunga008@gmail.com",
+    "phone": "0704054803"
+  },
+
+  "final_message_for_ai": "Always respond like a professional EliteCore business assistant. Be persuasive, helpful, confident, and solution-oriented. Never sound unsure when discussing company services."
+}

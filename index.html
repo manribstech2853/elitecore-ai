@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EliteCore AI Dashboard</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  background:
+    linear-gradient(rgba(5,10,25,0.85), rgba(5,10,25,0.85)),
+    url("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1600&q=80");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  overflow: hidden;
+}
+
+/* PARTICLES */
+#particles-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 260px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  z-index: 2;
+  padding: 15px;
+}
+
+.logo {
+  padding: 18px 12px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.new-chat {
+  margin: 10px 0 15px 0;
+  padding: 12px;
+  background: #38bdf8;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* CHAT LIST */
+.chat-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-item {
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-item:hover {
+  background: rgba(56,189,248,0.15);
+  transform: translateX(4px);
+}
+
+/* MAIN FIXED LAYOUT */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+/* HEADER */
+.header {
+  padding: 15px;
+  background: rgba(15, 23, 42, 0.8);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* CHAT AREA FIX */
+.chat {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  scroll-behavior: smooth;
+}
+
+/* MESSAGES */
+.msg {
+  max-width: 70%;
+  padding: 12px;
+  border-radius: 12px;
+  animation: fade 0.2s ease-in;
+}
+
+.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: black;
+}
+
+.bot {
+  align-self: flex-start;
+  background: rgba(56,189,248,0.15);
+  border: 1px solid rgba(56,189,248,0.3);
+}
+
+/* INPUT AREA FIXED */
+.input-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: rgba(15, 23, 42, 0.95);
+  flex-shrink: 0;
+}
+
+/* INPUT */
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+/* BUTTON */
+button {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #38bdf8;
+  cursor: pointer;
+  font-weight: bold;
+  color: black;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #0ea5e9;
+}
+
+/* ICON BAR */
+.action-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(56,189,248,0.2);
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.icon-btn:hover {
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 0 15px rgba(56,189,248,0.6);
+}
+
+/* ANIMATION */
+@keyframes fade {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+
+  .msg { max-width: 90%; }
+
+  .input-box {
+    flex-wrap: wrap;
+  }
+
+  .action-bar {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles-bg"></canvas>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="logo">🤖 EliteCore AI</div>
+  <button class="new-chat">+ New Chat</button>
+
+  <div class="chat-list">
+    <div class="chat-item">General Chat</div>
+    <div class="chat-item">Business Ideas</div>
+    <div class="chat-item">EliteCore Info</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <div class="header">
+    <div>Dashboard</div>
+    <div>EliteCore SaaS</div>
+  </div>
+
+  <div id="chat" class="chat"></div>
+
+
+  <!-- INPUT -->
+  <div class="input-box">
+    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
+    <div id="preview-container" style="display: none; padding: 10px; position: relative; width: fit-content;">
+    <img id="image-preview" src="" style="max-width: 150px; border-radius: 8px; border: 2px solid #007bff;">
+    <button onclick="clearImage()" style="position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; border: none; cursor: pointer; width: 25px; height: 25px;">×</button>
+</div>
+<div class="icon-btn" onclick="document.getElementById('imageInput').click()">📎</div>
+    <input id="input" placeholder="Ask EliteCore AI..." />
+    <button onclick="send()">Send</button>
+
+    <div class="action-bar">
+      <div class="icon-btn">📎</div>
+      <div class="icon-btn">🎤</div>
+      <div class="icon-btn">🖼</div>
+      <div class="icon-btn">✨</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const chat = document.getElementById("chat");
+
+
+    window.addEventListener('DOMContentLoaded', () => {
+        addMessage("Welcome to EliteCore AI! How can I help you today?", "bot");
+    });
+
+    function addMessage(text, type) {
+        const div = document.createElement("div");
+        div.classList.add("msg", type);
+        div.innerText = text;
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight; 
+    }
+
+   // Variable to track the current selected file
+let selectedFile = null;
+
+// Function to handle image selection and preview
+function handleImageSelection() {
+    const fileInput = document.getElementById('imageInput');
+    selectedFile = fileInput.files[0];
+    
+    if (selectedFile) {
+        // You can add a small UI alert or icon change here to show a file is ready
+        console.log("File selected:", selectedFile.name);
+    }
+}
+
+// Function to clear the image if the user changes their mind
+function clearImage() {
+    selectedFile = null;
+    document.getElementById('imageInput').value = "";
+    console.log("Image cleared");
+}
+
+async function send() {
+    const input = document.getElementById("input");
+    const text = input.value;
+    
+    // Use the selectedFile variable we tracked earlier
+    const file = selectedFile; 
+    
+    if (!text && !file) return;
+
+    // 1. Add user message to UI
+    addMessage(text || "Analyzing uploaded image...", "user");
+    input.value = "";
+
+    // 2. Show 'Analyzing' indicator
+    const thinkingDiv = document.createElement("div");
+    thinkingDiv.id = "thinking-indicator";
+    thinkingDiv.className = "msg bot";
+    thinkingDiv.innerText = "EliteCore is analyzing...";
+    document.getElementById("chat").appendChild(thinkingDiv);
+    document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+
+    // 3. Convert image to Base64 using FileReader API
+    let base64Image = null;
+    if (file) {
+        const reader = new FileReader();
+        base64Image = await new Promise((resolve) => {
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    try {
+        // 4. Send the request
+        const res = await fetch("http://127.0.0.1:3000/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                message: text,
+                image: base64Image 
+            })
+        });
+
+        const data = await res.json();
+
+        // 5. Remove indicator and show reply
+        const indicator = document.getElementById("thinking-indicator");
+        if (indicator) indicator.remove();
+        addMessage(data.reply, "bot");
+
+    } catch (err) {
+        const indicator = document.getElementById("thinking-indicator");
+        if (indicator) indicator.remove();
+        addMessage("Connection error. Is the server running?", "bot");
+    }
+
+    // 6. Reset the file state for the next message
+    clearImage();
+}
+
+
+</script>
+
+</body>
+</html>
