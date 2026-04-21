@@ -18,5 +18,14 @@
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.1.14"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manribstech2853/elitecore-ai.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/manribstech2853/elitecore-ai/issues"
+  },
+  "homepage": "https://github.com/manribstech2853/elitecore-ai#readme"
 }

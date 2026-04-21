@@ -5,7 +5,6 @@ const path = require("path");
 require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
 
 // Middleware
 app.use(cors());
@@ -101,7 +100,14 @@ app.post("/chat", async (req, res) => {
         });
     }
 });
+// This tells the server to use the Port assigned by Render/Heroku 
+// or use 8080 as a backup when running locally on your PC.
+    const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-    console.log(`🚀 EliteCore Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`
+    🚀 EliteCore is Live!
+    🏠 Local: http://localhost:${PORT}
+    🌍 Network: Check your Render Dashboard for the public URL
+    `);
 });
