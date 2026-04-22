@@ -48,16 +48,14 @@ body {
   position: relative;
   z-index: 2;
   padding: 15px 0;
-  /* Keeps the smooth expansion animation */
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
-/* Replace .sidebar:hover with this class */
+/* Sidebar expansion */
 .sidebar.expanded {
   width: 260px;
 }
-
 
 .sidebar-top, .sidebar-bottom {
   display: flex;
@@ -92,20 +90,20 @@ body {
   opacity: 0;
   transition: opacity 0.2s;
   font-size: 14px;
+  pointer-events: none;
 }
 
-.sidebar:hover .nav-text {
+/* Corrected: Show text when class is 'expanded' */
+.sidebar.expanded .nav-text {
   opacity: 1;
 }
 
-/* New Chat Styling */
 .new-chat-btn {
   background: rgba(56, 189, 248, 0.1);
   color: #38bdf8 !important;
   margin-bottom: 20px;
 }
 
-/* CHAT LIST (History) */
 .chat-list {
   flex: 1;
   display: flex;
@@ -123,11 +121,11 @@ body {
   display: none;
 }
 
-.sidebar:hover .history-label {
+/* Corrected: Show label when class is 'expanded' */
+.sidebar.expanded .history-label {
   display: block;
 }
 
-/* MAIN FIXED LAYOUT */
 .main {
   flex: 1;
   display: flex;
@@ -138,7 +136,6 @@ body {
   z-index: 2;
 }
 
-/* HEADER */
 .header {
   padding: 15px;
   background: rgba(15, 23, 42, 0.8);
@@ -147,7 +144,6 @@ body {
   justify-content: space-between;
 }
 
-/* CHAT AREA */
 .chat {
   flex: 1;
   padding: 20px;
@@ -159,7 +155,6 @@ body {
   scroll-behavior: smooth;
 }
 
-/* MESSAGES */
 .msg {
   max-width: 70%;
   padding: 12px;
@@ -182,22 +177,6 @@ body {
   border: 1px solid rgba(56,189,248,0.3);
 }
 
-.copy-btn, .edit-btn {
-  align-self: flex-end;
-  margin-top: 8px;
-  padding: 4px 10px;
-  font-size: 11px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.edit-btn { background: rgba(0, 0, 0, 0.3); font-size: 10px; }
-
-/* INPUT AREA */
 .input-box {
   display: flex;
   align-items: center;
@@ -230,8 +209,6 @@ button {
   transition: 0.2s;
 }
 
-.action-bar { display: flex; gap: 8px; align-items: center; }
-
 .icon-btn {
   width: 38px; height: 38px;
   display: flex; align-items: center; justify-content: center;
@@ -242,7 +219,6 @@ button {
   transition: 0.25s;
 }
 
-/* ANIMATION */
 @keyframes fade {
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
@@ -267,7 +243,7 @@ button {
 
 <div class="sidebar">
   <div class="sidebar-top">
-    <div class="nav-item" onclick="toggleSidebar()" style="color: white; font-weight: bold; cursor: pointer;"></div>
+    <div class="nav-item" onclick="toggleSidebar()" style="color: white; font-weight: bold;">
       <div class="nav-icon">☰</div>
       <div class="nav-text">EliteCore AI</div>
     </div>
@@ -278,8 +254,7 @@ button {
     </div>
 
     <div class="history-label">Recent</div>
-    <div class="chat-list" id="chat-history-list">
-        </div>
+    <div class="chat-list" id="chat-history-list"></div>
   </div>
 
   <div class="sidebar-bottom">
@@ -311,12 +286,6 @@ button {
     <div class="icon-btn" onclick="document.getElementById('imageInput').click()">📎</div>
     <input id="input" placeholder="Ask EliteCore AI..." onkeypress="if(event.key === 'Enter') send()" />
     <button onclick="send()">Send</button>
-
-    <div class="action-bar">
-      <div class="icon-btn" onclick="document.getElementById('imageInput').click()">🖼️</div>
-      <div class="icon-btn">🎤</div>
-      <div class="icon-btn">✨</div>
-    </div>
   </div>
 </div>
 
@@ -324,9 +293,11 @@ button {
 const chat = document.getElementById("chat");
 let selectedFile = null;
 
-window.addEventListener('DOMContentLoaded', () => {
-    addMessage("Welcome to EliteCore AI! How can I help you today?", "bot");
-});
+// Toggle function
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('expanded');
+}
 
 function startNewChat() {
     chat.innerHTML = "";
@@ -339,19 +310,6 @@ function addMessage(text, type) {
     const textSpan = document.createElement("span");
     textSpan.innerHTML = typeof marked !== 'undefined' ? marked.parse(text) : text;
     div.appendChild(textSpan);
-
-    if (type === "bot") {
-        const copyBtn = document.createElement("button");
-        copyBtn.innerText = "Copy";
-        copyBtn.className = "copy-btn";
-        copyBtn.onclick = () => {
-            navigator.clipboard.writeText(text).then(() => {
-                copyBtn.innerText = "Copied!";
-                setTimeout(() => copyBtn.innerText = "Copy", 2000);
-            });
-        };
-        div.appendChild(copyBtn);
-    }
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
@@ -387,11 +345,6 @@ function clearImage() {
     selectedFile = null;
     document.getElementById('imageInput').value = "";
     document.getElementById('preview-container').style.display = "none";
-}
-
-function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.toggle('expanded');
 }
 
 async function send() {
