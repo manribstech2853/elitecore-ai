@@ -482,6 +482,29 @@ function handleCredentialResponse(response) {
     }, 500);
 }
 
+function enterAsGuest() {
+    // 1. Hide the login screen smoothly
+    const overlay = document.getElementById('auth-overlay');
+    overlay.style.opacity = '0';
+    
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        
+        // 2. Set the dashboard name to "Guest User"
+        document.getElementById('user-display').innerText = "Guest User";
+        
+        // 3. Update Account Status in Settings to show they aren't logged in
+        const accountStatus = document.getElementById('account-status');
+        if (accountStatus) {
+            accountStatus.innerText = "Not Signed In (Guest)";
+            accountStatus.style.color = "#94a3b8"; // Grey color for guest
+        }
+
+        // 4. Send a welcome message from the bot
+        addMessage("Welcome! You are currently using EliteCore AI in Guest Mode. Your history will not be saved.", "bot");
+    }, 500);
+}
+
 function decodeJwtResponse(token) {
     let base64Url = token.split('.')[1];
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
