@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EliteCore AI Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EliteCore AI Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%2338bdf8;stop-opacity:1' /><stop offset='100%' style='stop-color:%239b51e0;stop-opacity:1' /></linearGradient></defs><path d='M20,25 L80,25 L80,35 L35,35 L35,45 L70,45 L70,55 L35,55 L35,65 L80,65 L80,75 L20,75 Z' fill='url(%23g)'/><path d='M50,5 L95,27.5 L95,72.5 L50,95 L5,72.5 L5,27.5 Z' fill='none' stroke='url(%23g)' stroke-width='4'/></svg>">
 
 <style>
 * {
@@ -63,6 +64,7 @@ body {
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
+  color: black;
 }
 
 /* CHAT LIST */
@@ -71,6 +73,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow-y: auto;
 }
 
 .chat-item {
@@ -79,6 +82,10 @@ body {
   border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chat-item:hover {
@@ -124,6 +131,9 @@ body {
   padding: 12px;
   border-radius: 12px;
   animation: fade 0.2s ease-in;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .user {
@@ -137,69 +147,75 @@ body {
   background: rgba(56,189,248,0.15);
   border: 1px solid rgba(56,189,248,0.3);
 }
-/* COPY BUTTON STYLES */
-.msg {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
 
 .copy-btn {
-    align-self: flex-end;
-    margin-top: 8px;
-    padding: 4px 10px;
-    font-size: 11px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
+  align-self: flex-end;
+  margin-top: 8px;
+  padding: 4px 10px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .copy-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #38bdf8; /* This adds a nice blue highlight on hover */
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #38bdf8;
 }
 
-.copy-btn:active {
-    transform: scale(0.95);
-}
-
-/* EDIT BUTTON STYLES */
 .edit-btn {
-    align-self: flex-end;
-    margin-top: 5px;
-    padding: 3px 8px;
-    font-size: 10px;
-    background: rgba(0, 0, 0, 0.3); /* Slightly darker to distinguish from copy */
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    cursor: pointer;
-    opacity: 0.8;
-    transition: all 0.2s ease;
+  align-self: flex-end;
+  margin-top: 5px;
+  padding: 3px 8px;
+  font-size: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.2s ease;
 }
 
 .edit-btn:hover {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.5);
-    border-color: #fbbf24; /* A nice amber/yellow glow for editing */
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.5);
+  border-color: #fbbf24;
 }
+
 /* INPUT AREA FIXED */
 .input-box {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
   padding: 12px;
   border-top: 1px solid rgba(255,255,255,0.05);
   background: rgba(15, 23, 42, 0.95);
   flex-shrink: 0;
 }
 
+.input-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* PREVIEW BOX */
+#preview-container {
+  display: none; 
+  padding: 10px; 
+  position: relative; 
+  width: fit-content;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
 /* INPUT */
-input {
+input[type="text"] {
   flex: 1;
   min-width: 0;
   padding: 12px;
@@ -211,7 +227,7 @@ input {
 }
 
 /* BUTTON */
-button {
+.send-btn {
   padding: 12px 16px;
   border: none;
   border-radius: 10px;
@@ -222,34 +238,31 @@ button {
   transition: 0.2s;
 }
 
-button:hover {
-  background: #0ea5e9;
-}
-
 /* ICON BAR */
 .action-bar {
   display: flex;
   gap: 8px;
   align-items: center;
-  flex-shrink: 0;
+  margin-top: 10px;
 }
 
 .icon-btn {
-  width: 38px;
-  height: 38px;
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 8px;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(56,189,248,0.2);
   cursor: pointer;
   transition: 0.25s;
+  font-size: 14px;
 }
 
 .icon-btn:hover {
-  transform: scale(1.15) rotate(5deg);
-  box-shadow: 0 0 15px rgba(56,189,248,0.6);
+  transform: scale(1.1);
+  background: rgba(56,189,248,0.2);
 }
 
 /* ANIMATION */
@@ -258,21 +271,6 @@ button:hover {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-
-  .msg { max-width: 90%; }
-
-  .input-box {
-    flex-wrap: wrap;
-  }
-
-  .action-bar {
-    width: 100%;
-    justify-content: center;
-  }
-}
 /* THE ANALYZING ANIMATION */
 .analyzing-container {
     display: flex;
@@ -281,7 +279,6 @@ button:hover {
     padding: 5px;
     color: #94a3b8;
     font-size: 14px;
-    font-family: 'Inter', sans-serif;
 }
 
 .gemini-pulse {
@@ -311,7 +308,6 @@ button:hover {
     0% { transform: scale(1); opacity: 0.8; }
     100% { transform: scale(2.5); opacity: 0; }
 }
-
 </style>
 </head>
 
@@ -319,21 +315,15 @@ button:hover {
 
 <canvas id="particles-bg"></canvas>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="logo">🤖 EliteCore AI</div>
-  <button class="new-chat">+ New Chat</button>
+  <button class="new-chat" onclick="startNewChat()">+ New Chat</button>
 
-  <div class="chat-list">
-    <div class="chat-item">General Chat</div>
-    <div class="chat-item">Business Ideas</div>
-    <div class="chat-item">EliteCore Info</div>
-  </div>
+  <div class="chat-list" id="chat-history-list">
+    </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
-
   <div class="header">
     <div>Dashboard</div>
     <div>EliteCore SaaS</div>
@@ -341,92 +331,145 @@ button:hover {
 
   <div id="chat" class="chat"></div>
 
-
-  <!-- INPUT -->
   <div class="input-box">
-    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
-    <div id="preview-container" style="display: none; padding: 10px; position: relative; width: fit-content;">
-    <img id="image-preview" src="" style="max-width: 150px; border-radius: 8px; border: 2px solid #007bff;">
-    <button onclick="clearImage()" style="position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; border: none; cursor: pointer; width: 25px; height: 25px;">×</button>
-</div>
-<div class="icon-btn" onclick="document.getElementById('imageInput').click()">📎</div>
-    <input id="input" placeholder="Ask EliteCore AI..." />
-    <button onclick="send()">Send</button>
+    <div id="preview-container">
+        <img id="image-preview" src="" style="max-width: 120px; border-radius: 8px; border: 2px solid #38bdf8;">
+        <button onclick="clearImage()" style="position: absolute; top: -5px; right: -5px; background: #ff4444; color: white; border-radius: 50%; border: none; cursor: pointer; width: 22px; height: 22px; font-weight: bold;">×</button>
+    </div>
+
+    <div class="input-controls">
+        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
+        <div class="icon-btn" onclick="document.getElementById('imageInput').click()">📎</div>
+        
+        <input type="text" id="input" placeholder="Ask EliteCore AI..." onkeypress="if(event.key === 'Enter') send()" />
+        <button class="send-btn" onclick="send()">Send</button>
+    </div>
 
     <div class="action-bar">
-      <div class="icon-btn">📎</div>
+      <div class="icon-btn" onclick="document.getElementById('imageInput').click()">🖼</div>
       <div class="icon-btn">🎤</div>
-      <div class="icon-btn">🖼</div>
       <div class="icon-btn">✨</div>
     </div>
   </div>
-
 </div>
 
 <script>
 const chat = document.getElementById("chat");
+let selectedFile = null;
 
-
-    window.addEventListener('DOMContentLoaded', () => {
+// Initialization
+window.addEventListener('DOMContentLoaded', () => {
+    renderHistory();
+    if (chat.children.length === 0) {
         addMessage("Welcome to EliteCore AI! How can I help you today?", "bot");
-    });
+    }
+});
 
-// Function to show the "Analyzing" state
+// History Logic
+function startNewChat() {
+    if (chat.children.length > 1) {
+        saveChatToHistory();
+    }
+    chat.innerHTML = "";
+    addMessage("Started a fresh conversation. What's on your mind?", "bot");
+}
+
+function saveChatToHistory() {
+    const messages = chat.innerHTML;
+    if (!messages.trim()) return;
+
+    let history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
+    
+    // Create a title from the first user message
+    const firstUserMsg = Array.from(document.querySelectorAll(".msg.user")).shift();
+    const title = firstUserMsg ? firstUserMsg.innerText.replace("Edit", "").substring(0, 25) + "..." : "New Chat " + new Date().toLocaleTimeString();
+
+    const newEntry = {
+        id: Date.now(),
+        title: title,
+        html: messages
+    };
+
+    history.unshift(newEntry);
+    localStorage.setItem("elitecore_history", JSON.stringify(history.slice(0, 15)));
+    renderHistory();
+}
+
+function renderHistory() {
+    const list = document.getElementById("chat-history-list");
+    const history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
+    
+    if (history.length === 0) {
+        list.innerHTML = '<div style="color: #64748b; font-size: 12px; padding: 10px;">No recent chats</div>';
+        return;
+    }
+
+    list.innerHTML = history.map(item => `
+        <div class="chat-item" onclick="loadChat(${item.id})">
+            ${item.title}
+        </div>
+    `).join('');
+}
+
+function loadChat(id) {
+    const history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
+    const chatEntry = history.find(item => item.id === id);
+    if (chatEntry) {
+        chat.innerHTML = chatEntry.html;
+        // Re-attach event listeners to new buttons if necessary
+        chat.scrollTop = chat.scrollHeight;
+    }
+}
+
+// UI Functions
 function showAnalyzing() {
     const div = document.createElement("div");
     div.id = "analyzing-bubble";
     div.classList.add("msg", "bot");
-    
     div.innerHTML = `
         <div class="analyzing-container">
             <div class="gemini-pulse"></div>
             <span>Analyzing...</span>
         </div>
     `;
-    
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
 
-// Function to remove it when the response arrives
 function removeAnalyzing() {
     const loader = document.getElementById("analyzing-bubble");
     if (loader) loader.remove();
 }
 
-    function addMessage(text, type) {
+function addMessage(text, type) {
     const div = document.createElement("div");
     div.classList.add("msg", type);
     
     const textSpan = document.createElement("span");
-    textSpan.innerHTML = marked.parse(text);
+    // Only parse markdown if 'marked' is available
+    textSpan.innerHTML = typeof marked !== 'undefined' ? marked.parse(text) : text;
     div.appendChild(textSpan);
 
     if (type === "bot") {
-        // Copy button for the bot
         const copyBtn = document.createElement("button");
         copyBtn.innerText = "Copy";
         copyBtn.className = "copy-btn";
         copyBtn.onclick = () => {
-            navigator.clipboard.writeText(text).then(() => {
+            const cleanText = textSpan.innerText;
+            navigator.clipboard.writeText(cleanText).then(() => {
                 copyBtn.innerText = "Copied!";
                 setTimeout(() => copyBtn.innerText = "Copy", 2000);
             });
         };
         div.appendChild(copyBtn);
     } else if (type === "user") {
-        // Edit button for the user
         const editBtn = document.createElement("button");
         editBtn.innerText = "Edit";
         editBtn.className = "edit-btn";
         editBtn.onclick = () => {
-            // This grabs your input field and puts the text back in
             const inputField = document.getElementById("input"); 
             inputField.value = text;
             inputField.focus();
-            
-            // Optional: Scroll to the input box so the user sees it
-            inputField.scrollIntoView({ behavior: 'smooth' });
         };
         div.appendChild(editBtn);
     }
@@ -434,34 +477,35 @@ function removeAnalyzing() {
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
-    
 
-   // Variable to track the current selected file
-let selectedFile = null;
-
-// Function to handle image selection and preview
+// Image Handling
 function handleImageSelection() {
     const fileInput = document.getElementById('imageInput');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImg = document.getElementById('image-preview');
+    
     selectedFile = fileInput.files[0];
     
     if (selectedFile) {
-        // You can add a small UI alert or icon change here to show a file is ready
-        console.log("File selected:", selectedFile.name);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            previewContainer.style.display = "block";
+        };
+        reader.readAsDataURL(selectedFile);
     }
 }
 
-// Function to clear the image if the user changes their mind
 function clearImage() {
     selectedFile = null;
     document.getElementById('imageInput').value = "";
-    console.log("Image cleared");
+    document.getElementById('preview-container').style.display = "none";
 }
 
+// Sending Logic
 async function send() {
     const input = document.getElementById("input");
     const text = input.value;
-    
-    // Use the selectedFile variable we tracked earlier
     const file = selectedFile; 
     
     if (!text && !file) return;
@@ -470,11 +514,10 @@ async function send() {
     addMessage(text || "Analyzing uploaded image...", "user");
     input.value = "";
 
-    // 2. UPDATED: Show the animated Gemini-style indicator
-    // This replaces the manual thinkingDiv creation
+    // 2. Show indicator
     showAnalyzing();
 
-    // 3. Convert image to Base64 using FileReader API
+    // 3. Process Image
     let base64Image = null;
     if (file) {
         const reader = new FileReader();
@@ -496,21 +539,16 @@ async function send() {
         });
 
         const data = await res.json();
-
-        // 5. UPDATED: Remove indicator using the helper function
         removeAnalyzing(); 
         addMessage(data.reply, "bot");
 
     } catch (err) {
-        // UPDATED: Ensure it is removed if an error occurs
         removeAnalyzing();
         addMessage("Connection error. Is the server running?", "bot");
     }
 
-    // 6. Reset the file state for the next message
     clearImage();
 }
-
 </script>
 
 </body>
