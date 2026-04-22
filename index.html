@@ -1054,7 +1054,30 @@ input {
   </div>
 </div>
 
+</body>
+
 <script>
+
+  function enterAsGuest() {
+    const overlay = document.getElementById('auth-overlay');
+    // Change this to .style.opacity
+    overlay.style.opacity = '0';
+    
+    setTimeout(() => {
+        // Change this to .style.display
+        overlay.style.display = 'none';
+        
+        document.getElementById('user-display').innerText = "Guest Mode";
+        
+        const accountStatus = document.getElementById('account-status');
+        if (accountStatus) {
+            accountStatus.innerText = "Not Signed In (Guest)";
+            accountStatus.style.color = "#94a3b8"; 
+        }
+
+        addMessage("Welcome! You are using EliteCore in Guest Mode.", "bot");
+    }, 500);
+}
 const chat = document.getElementById("chat");
 let selectedFile = null;
 
@@ -1071,14 +1094,6 @@ function googleSignIn() {
     }, 500);
 }
 
-function enterAsGuest() {
-    document.getElementById('auth-overlay').style.opacity = '0';
-    setTimeout(() => {
-        document.getElementById('auth-overlay').style.display = 'none';
-        document.getElementById('user-display').innerText = "Guest Mode";
-        addMessage("Welcome! You are using EliteCore in Guest Mode. Your history won't be saved.", "bot");
-    }, 500);
-}
 
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
@@ -1198,5 +1213,5 @@ function handleCredentialResponse(response) {
 }
 </script>
 
-</body>
+
 </html>
