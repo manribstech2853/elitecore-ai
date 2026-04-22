@@ -18,22 +18,38 @@
 body {
   height: 100vh;
   display: flex;
-  background: #0f172a;
+  background:
+    linear-gradient(rgba(5,10,25,0.85), rgba(5,10,25,0.85)),
+    url("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1600&q=80");
+  background-size: cover;
+  background-position: center;
   color: white;
   overflow: hidden;
+}
+
+/* PARTICLES */
+#particles-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* ===== UPDATED GEMINI SIDEBAR ===== */
 .sidebar {
   width: 68px; /* Slim by default */
-  background: #1e293b;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(18px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 12px 0;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  z-index: 2;
+  padding: 15px 0;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 10;
-  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
 .sidebar:hover {
@@ -43,7 +59,6 @@ body {
 .sidebar-top, .sidebar-bottom {
   display: flex;
   flex-direction: column;
-  gap: 8px;
   width: 100%;
 }
 
@@ -56,12 +71,11 @@ body {
   color: #94a3b8;
   transition: 0.2s;
   border-radius: 0 25px 25px 0;
-  margin-right: 10px;
 }
 
 .nav-item:hover {
   background: rgba(255,255,255,0.05);
-  color: white;
+  color: #38bdf8;
 }
 
 .nav-icon {
@@ -75,26 +89,26 @@ body {
   opacity: 0;
   transition: opacity 0.2s;
   font-size: 14px;
-  font-weight: 500;
 }
 
 .sidebar:hover .nav-text {
   opacity: 1;
 }
 
-/* Special New Chat Button */
-.nav-item.new-chat-btn {
+/* New Chat Styling */
+.new-chat-btn {
   background: rgba(56, 189, 248, 0.1);
-  color: #38bdf8;
-  margin-bottom: 10px;
+  color: #38bdf8 !important;
+  margin-bottom: 20px;
 }
 
-/* History Container */
+/* CHAT LIST (History) */
 .chat-list {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-top: 10px;
 }
 
 .history-label {
@@ -110,93 +124,147 @@ body {
   display: block;
 }
 
-/* MAIN LAYOUT */
+/* MAIN FIXED LAYOUT */
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #0f172a;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
 
+/* HEADER */
+.header {
+  padding: 15px;
+  background: rgba(15, 23, 42, 0.8);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* CHAT AREA */
 .chat {
   flex: 1;
-  padding: 40px 15%; /* Centered chat look */
+  padding: 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+  min-height: 0;
+  scroll-behavior: smooth;
 }
 
-/* INPUT SECTION */
-.input-container {
-  padding: 20px 15%;
-  background: #0f172a;
-}
-
-.input-box {
-  background: #1e293b;
-  border-radius: 28px;
-  padding: 10px 20px;
+/* MESSAGES */
+.msg {
+  max-width: 70%;
+  padding: 12px;
+  border-radius: 12px;
+  animation: fade 0.2s ease-in;
+  position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255,255,255,0.1);
 }
 
-.input-row {
+.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: black;
+}
+
+.bot {
+  align-self: flex-start;
+  background: rgba(56,189,248,0.15);
+  border: 1px solid rgba(56,189,248,0.3);
+}
+
+.copy-btn, .edit-btn {
+  align-self: flex-end;
+  margin-top: 8px;
+  padding: 4px 10px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-btn { background: rgba(0, 0, 0, 0.3); font-size: 10px; }
+
+/* INPUT AREA */
+.input-box {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: rgba(15, 23, 42, 0.95);
+  flex-shrink: 0;
 }
 
-input[type="text"] {
+input {
   flex: 1;
-  background: transparent;
+  min-width: 0;
+  padding: 12px;
   border: none;
+  border-radius: 10px;
   outline: none;
+  background: rgba(255,255,255,0.05);
   color: white;
-  padding: 12px 0;
-  font-size: 16px;
 }
 
-.icon-btn {
-  background: transparent;
+button {
+  padding: 12px 16px;
   border: none;
-  color: #94a3b8;
+  border-radius: 10px;
+  background: #38bdf8;
   cursor: pointer;
-  font-size: 20px;
-  padding: 8px;
-  border-radius: 50%;
+  font-weight: bold;
+  color: black;
   transition: 0.2s;
 }
 
-.icon-btn:hover {
-  background: rgba(255,255,255,0.05);
-  color: #38bdf8;
+.action-bar { display: flex; gap: 8px; align-items: center; }
+
+.icon-btn {
+  width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(56,189,248,0.2);
+  cursor: pointer;
+  transition: 0.25s;
 }
 
-/* MESSAGE BUBBLES */
-.msg { max-width: 85%; line-height: 1.6; }
-.user { align-self: flex-end; background: #2d3748; padding: 12px 20px; border-radius: 18px; }
-.bot { align-self: flex-start; width: 100%; }
+/* ANIMATION */
+@keyframes fade {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* ANALYZING ANIMATION */
+.analyzing-container { display: flex; align-items: center; gap: 12px; padding: 5px; color: #94a3b8; font-size: 14px; }
 .gemini-pulse {
-  width: 16px; height: 16px;
+  width: 14px; height: 14px;
   background: linear-gradient(135deg, #4285f4, #9b51e0, #81c995);
   border-radius: 50%;
+  position: relative;
   animation: rotate-gradient 2s linear infinite;
 }
-@keyframes rotate-gradient { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+@keyframes rotate-gradient { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
 </head>
 
 <body>
 
+<canvas id="particles-bg"></canvas>
+
 <div class="sidebar">
   <div class="sidebar-top">
-    <div class="nav-item">
+    <div class="nav-item" style="color: white; font-weight: bold;">
       <div class="nav-icon">☰</div>
       <div class="nav-text">EliteCore AI</div>
     </div>
@@ -208,7 +276,7 @@ input[type="text"] {
 
     <div class="history-label">Recent</div>
     <div class="chat-list" id="chat-history-list">
-      </div>
+        </div>
   </div>
 
   <div class="sidebar-bottom">
@@ -216,7 +284,7 @@ input[type="text"] {
       <div class="nav-icon">❓</div>
       <div class="nav-text">Help</div>
     </div>
-    <div class="nav-item" onclick="alert('Settings feature active soon!')">
+    <div class="nav-item">
       <div class="nav-icon">⚙️</div>
       <div class="nav-text">Settings</div>
     </div>
@@ -224,21 +292,27 @@ input[type="text"] {
 </div>
 
 <div class="main">
-  <div class="chat" id="chat"></div>
+  <div class="header">
+    <div>Dashboard</div>
+    <div>EliteCore SaaS</div>
+  </div>
 
-  <div class="input-container">
-    <div id="preview-container" style="display:none; margin-bottom:10px;">
-        <img id="image-preview" src="" style="max-width: 100px; border-radius: 12px;">
+  <div id="chat" class="chat"></div>
+
+  <div class="input-box">
+    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
+    <div id="preview-container" style="display: none; padding: 10px; position: relative; width: fit-content;">
+      <img id="image-preview" src="" style="max-width: 150px; border-radius: 8px; border: 2px solid #007bff;">
+      <button onclick="clearImage()" style="position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; border: none; cursor: pointer; width: 25px; height: 25px;">×</button>
     </div>
-    
-    <div class="input-box">
-      <div class="input-row">
-        <input type="text" id="input" placeholder="Enter a prompt here" onkeypress="if(event.key === 'Enter') send()">
-        
-        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
-        <button class="icon-btn" onclick="document.getElementById('imageInput').click()">🖼️</button>
-        <button class="icon-btn" onclick="send()">➔</button>
-      </div>
+    <div class="icon-btn" onclick="document.getElementById('imageInput').click()">📎</div>
+    <input id="input" placeholder="Ask EliteCore AI..." onkeypress="if(event.key === 'Enter') send()" />
+    <button onclick="send()">Send</button>
+
+    <div class="action-bar">
+      <div class="icon-btn" onclick="document.getElementById('imageInput').click()">🖼️</div>
+      <div class="icon-btn">🎤</div>
+      <div class="icon-btn">✨</div>
     </div>
   </div>
 </div>
@@ -247,51 +321,34 @@ input[type="text"] {
 const chat = document.getElementById("chat");
 let selectedFile = null;
 
-// Initialization
 window.addEventListener('DOMContentLoaded', () => {
-    renderHistory();
-    if (chat.children.length === 0) {
-        addMessage("Hello! I'm EliteCore. How can I help you today?", "bot");
-    }
+    addMessage("Welcome to EliteCore AI! How can I help you today?", "bot");
 });
 
 function startNewChat() {
-    if (chat.children.length > 1) saveChatToHistory();
     chat.innerHTML = "";
-    addMessage("Started a fresh conversation.", "bot");
-}
-
-function saveChatToHistory() {
-    let history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
-    const firstUserMsg = document.querySelector(".msg.user");
-    const title = firstUserMsg ? firstUserMsg.innerText.substring(0, 20) + "..." : "Chat " + new Date().toLocaleTimeString();
-    
-    history.unshift({ id: Date.now(), title, html: chat.innerHTML });
-    localStorage.setItem("elitecore_history", JSON.stringify(history.slice(0, 10)));
-    renderHistory();
-}
-
-function renderHistory() {
-    const list = document.getElementById("chat-history-list");
-    const history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
-    list.innerHTML = history.map(item => `
-        <div class="nav-item" onclick="loadChat(${item.id})">
-            <div class="nav-icon">💬</div>
-            <div class="nav-text">${item.title}</div>
-        </div>
-    `).join('');
-}
-
-function loadChat(id) {
-    const history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
-    const item = history.find(i => i.id === id);
-    if (item) chat.innerHTML = item.html;
+    addMessage("Started a fresh conversation. What's on your mind?", "bot");
 }
 
 function addMessage(text, type) {
     const div = document.createElement("div");
     div.classList.add("msg", type);
-    div.innerHTML = `<div>${typeof marked !== 'undefined' ? marked.parse(text) : text}</div>`;
+    const textSpan = document.createElement("span");
+    textSpan.innerHTML = typeof marked !== 'undefined' ? marked.parse(text) : text;
+    div.appendChild(textSpan);
+
+    if (type === "bot") {
+        const copyBtn = document.createElement("button");
+        copyBtn.innerText = "Copy";
+        copyBtn.className = "copy-btn";
+        copyBtn.onclick = () => {
+            navigator.clipboard.writeText(text).then(() => {
+                copyBtn.innerText = "Copied!";
+                setTimeout(() => copyBtn.innerText = "Copy", 2000);
+            });
+        };
+        div.appendChild(copyBtn);
+    }
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
@@ -300,9 +357,33 @@ function showAnalyzing() {
     const div = document.createElement("div");
     div.id = "analyzing-bubble";
     div.classList.add("msg", "bot");
-    div.innerHTML = `<div style="display:flex;align-items:center;gap:10px;"><div class="gemini-pulse"></div><span>EliteCore is thinking...</span></div>`;
+    div.innerHTML = `<div class="analyzing-container"><div class="gemini-pulse"></div><span>Analyzing...</span></div>`;
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
+}
+
+function removeAnalyzing() {
+    const loader = document.getElementById("analyzing-bubble");
+    if (loader) loader.remove();
+}
+
+function handleImageSelection() {
+    const fileInput = document.getElementById('imageInput');
+    selectedFile = fileInput.files[0];
+    if (selectedFile) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById('image-preview').src = e.target.result;
+            document.getElementById('preview-container').style.display = "block";
+        };
+        reader.readAsDataURL(selectedFile);
+    }
+}
+
+function clearImage() {
+    selectedFile = null;
+    document.getElementById('imageInput').value = "";
+    document.getElementById('preview-container').style.display = "none";
 }
 
 async function send() {
@@ -316,10 +397,10 @@ async function send() {
 
     let base64Image = null;
     if (selectedFile) {
-        base64Image = await new Promise(r => {
-            const rd = new FileReader();
-            rd.onload = () => r(rd.result);
-            rd.readAsDataURL(selectedFile);
+        const reader = new FileReader();
+        base64Image = await new Promise((r) => {
+            reader.onload = () => r(reader.result);
+            reader.readAsDataURL(selectedFile);
         });
     }
 
@@ -330,27 +411,15 @@ async function send() {
             body: JSON.stringify({ message: text, image: base64Image })
         });
         const data = await res.json();
-        document.getElementById("analyzing-bubble").remove();
+        removeAnalyzing();
         addMessage(data.reply, "bot");
-    } catch (e) {
-        document.getElementById("analyzing-bubble").remove();
-        addMessage("Error connecting to server.", "bot");
+    } catch (err) {
+        removeAnalyzing();
+        addMessage("Connection error.", "bot");
     }
-    selectedFile = null;
-    document.getElementById("preview-container").style.display = "none";
-}
-
-function handleImageSelection() {
-    selectedFile = document.getElementById('imageInput').files[0];
-    if (selectedFile) {
-        const rd = new FileReader();
-        rd.onload = (e) => {
-            document.getElementById('image-preview').src = e.target.result;
-            document.getElementById('preview-container').style.display = "block";
-        };
-        rd.readAsDataURL(selectedFile);
-    }
+    clearImage();
 }
 </script>
+
 </body>
 </html>
