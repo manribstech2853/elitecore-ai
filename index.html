@@ -18,337 +18,227 @@
 body {
   height: 100vh;
   display: flex;
-  background:
-    linear-gradient(rgba(5,10,25,0.85), rgba(5,10,25,0.85)),
-    url("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1600&q=80");
-  background-size: cover;
-  background-position: center;
+  background: #0f172a;
   color: white;
   overflow: hidden;
 }
 
-/* PARTICLES */
-#particles-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* ===== SIDEBAR ===== */
+/* ===== UPDATED GEMINI SIDEBAR ===== */
 .sidebar {
-  width: 260px;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(18px);
+  width: 68px; /* Slim by default */
+  background: #1e293b;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(255,255,255,0.08);
-  position: relative;
-  z-index: 2;
-  padding: 15px;
+  justify-content: space-between;
+  padding: 12px 0;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
-.logo {
-  padding: 18px 12px;
-  font-size: 18px;
-  font-weight: bold;
+.sidebar:hover {
+  width: 260px; /* Expands on hover */
 }
 
-.new-chat {
-  margin: 10px 0 15px 0;
-  padding: 12px;
-  background: #38bdf8;
-  border: none;
-  border-radius: 10px;
+.sidebar-top, .sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 22px;
   cursor: pointer;
-  font-weight: bold;
-  color: black;
+  white-space: nowrap;
+  color: #94a3b8;
+  transition: 0.2s;
+  border-radius: 0 25px 25px 0;
+  margin-right: 10px;
 }
 
-/* CHAT LIST */
+.nav-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+.nav-icon {
+  font-size: 20px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.nav-text {
+  margin-left: 20px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sidebar:hover .nav-text {
+  opacity: 1;
+}
+
+/* Special New Chat Button */
+.nav-item.new-chat-btn {
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  margin-bottom: 10px;
+}
+
+/* History Container */
 .chat-list {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 10px;
 }
 
-.chat-item {
-  padding: 12px 14px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.history-label {
+  padding: 10px 22px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 1px;
+  display: none;
 }
 
-.chat-item:hover {
-  background: rgba(56,189,248,0.15);
-  transform: translateX(4px);
+.sidebar:hover .history-label {
+  display: block;
 }
 
-/* MAIN FIXED LAYOUT */
+/* MAIN LAYOUT */
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden;
-  position: relative;
-  z-index: 2;
+  background: #0f172a;
 }
 
-/* HEADER */
-.header {
-  padding: 15px;
-  background: rgba(15, 23, 42, 0.8);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  display: flex;
-  justify-content: space-between;
-}
-
-/* CHAT AREA FIX */
 .chat {
   flex: 1;
-  padding: 20px;
+  padding: 40px 15%; /* Centered chat look */
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-height: 0;
-  scroll-behavior: smooth;
+  gap: 20px;
 }
 
-/* MESSAGES */
-.msg {
-  max-width: 70%;
-  padding: 12px;
-  border-radius: 12px;
-  animation: fade 0.2s ease-in;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+/* INPUT SECTION */
+.input-container {
+  padding: 20px 15%;
+  background: #0f172a;
 }
 
-.user {
-  align-self: flex-end;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: black;
-}
-
-.bot {
-  align-self: flex-start;
-  background: rgba(56,189,248,0.15);
-  border: 1px solid rgba(56,189,248,0.3);
-}
-
-.copy-btn {
-  align-self: flex-end;
-  margin-top: 8px;
-  padding: 4px 10px;
-  font-size: 11px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.copy-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: #38bdf8;
-}
-
-.edit-btn {
-  align-self: flex-end;
-  margin-top: 5px;
-  padding: 3px 8px;
-  font-size: 10px;
-  background: rgba(0, 0, 0, 0.3);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: all 0.2s ease;
-}
-
-.edit-btn:hover {
-  opacity: 1;
-  background: rgba(0, 0, 0, 0.5);
-  border-color: #fbbf24;
-}
-
-/* INPUT AREA FIXED */
 .input-box {
+  background: #1e293b;
+  border-radius: 28px;
+  padding: 10px 20px;
   display: flex;
   flex-direction: column;
-  padding: 12px;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  background: rgba(15, 23, 42, 0.95);
-  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-.input-controls {
+.input-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 100%;
+  gap: 15px;
 }
 
-/* PREVIEW BOX */
-#preview-container {
-  display: none; 
-  padding: 10px; 
-  position: relative; 
-  width: fit-content;
-  background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-/* INPUT */
 input[type="text"] {
   flex: 1;
-  min-width: 0;
-  padding: 12px;
+  background: transparent;
   border: none;
-  border-radius: 10px;
   outline: none;
-  background: rgba(255,255,255,0.05);
   color: white;
-}
-
-/* BUTTON */
-.send-btn {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 10px;
-  background: #38bdf8;
-  cursor: pointer;
-  font-weight: bold;
-  color: black;
-  transition: 0.2s;
-}
-
-/* ICON BAR */
-.action-bar {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-top: 10px;
+  padding: 12px 0;
+  font-size: 16px;
 }
 
 .icon-btn {
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(56,189,248,0.2);
+  background: transparent;
+  border: none;
+  color: #94a3b8;
   cursor: pointer;
-  transition: 0.25s;
-  font-size: 14px;
+  font-size: 20px;
+  padding: 8px;
+  border-radius: 50%;
+  transition: 0.2s;
 }
 
 .icon-btn:hover {
-  transform: scale(1.1);
-  background: rgba(56,189,248,0.2);
+  background: rgba(255,255,255,0.05);
+  color: #38bdf8;
 }
 
-/* ANIMATION */
-@keyframes fade {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* MESSAGE BUBBLES */
+.msg { max-width: 85%; line-height: 1.6; }
+.user { align-self: flex-end; background: #2d3748; padding: 12px 20px; border-radius: 18px; }
+.bot { align-self: flex-start; width: 100%; }
 
-/* THE ANALYZING ANIMATION */
-.analyzing-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 5px;
-    color: #94a3b8;
-    font-size: 14px;
-}
-
+/* ANALYZING ANIMATION */
 .gemini-pulse {
-    width: 14px;
-    height: 14px;
-    background: linear-gradient(135deg, #4285f4, #9b51e0, #81c995);
-    border-radius: 50%;
-    position: relative;
-    animation: rotate-gradient 2s linear infinite;
+  width: 16px; height: 16px;
+  background: linear-gradient(135deg, #4285f4, #9b51e0, #81c995);
+  border-radius: 50%;
+  animation: rotate-gradient 2s linear infinite;
 }
+@keyframes rotate-gradient { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-.gemini-pulse::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    border-radius: 50%;
-    background: inherit;
-    animation: pulse-bloom 1.5s ease-out infinite;
-}
-
-@keyframes rotate-gradient {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes pulse-bloom {
-    0% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(2.5); opacity: 0; }
-}
 </style>
 </head>
 
 <body>
 
-<canvas id="particles-bg"></canvas>
-
 <div class="sidebar">
-  <div class="logo">🤖 EliteCore AI</div>
-  <button class="new-chat" onclick="startNewChat()">+ New Chat</button>
-
-  <div class="chat-list" id="chat-history-list">
+  <div class="sidebar-top">
+    <div class="nav-item">
+      <div class="nav-icon">☰</div>
+      <div class="nav-text">EliteCore AI</div>
     </div>
+    
+    <div class="nav-item new-chat-btn" onclick="startNewChat()">
+      <div class="nav-icon">📝</div>
+      <div class="nav-text">New Chat</div>
+    </div>
+
+    <div class="history-label">Recent</div>
+    <div class="chat-list" id="chat-history-list">
+      </div>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="nav-item">
+      <div class="nav-icon">❓</div>
+      <div class="nav-text">Help</div>
+    </div>
+    <div class="nav-item" onclick="alert('Settings feature active soon!')">
+      <div class="nav-icon">⚙️</div>
+      <div class="nav-text">Settings</div>
+    </div>
+  </div>
 </div>
 
 <div class="main">
-  <div class="header">
-    <div>Dashboard</div>
-    <div>EliteCore SaaS</div>
-  </div>
+  <div class="chat" id="chat"></div>
 
-  <div id="chat" class="chat"></div>
-
-  <div class="input-box">
-    <div id="preview-container">
-        <img id="image-preview" src="" style="max-width: 120px; border-radius: 8px; border: 2px solid #38bdf8;">
-        <button onclick="clearImage()" style="position: absolute; top: -5px; right: -5px; background: #ff4444; color: white; border-radius: 50%; border: none; cursor: pointer; width: 22px; height: 22px; font-weight: bold;">×</button>
+  <div class="input-container">
+    <div id="preview-container" style="display:none; margin-bottom:10px;">
+        <img id="image-preview" src="" style="max-width: 100px; border-radius: 12px;">
     </div>
-
-    <div class="input-controls">
-        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
-        <div class="icon-btn" onclick="document.getElementById('imageInput').click()">📎</div>
+    
+    <div class="input-box">
+      <div class="input-row">
+        <input type="text" id="input" placeholder="Enter a prompt here" onkeypress="if(event.key === 'Enter') send()">
         
-        <input type="text" id="input" placeholder="Ask EliteCore AI..." onkeypress="if(event.key === 'Enter') send()" />
-        <button class="send-btn" onclick="send()">Send</button>
-    </div>
-
-    <div class="action-bar">
-      <div class="icon-btn" onclick="document.getElementById('imageInput').click()">🖼</div>
-      <div class="icon-btn">🎤</div>
-      <div class="icon-btn">✨</div>
+        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
+        <button class="icon-btn" onclick="document.getElementById('imageInput').click()">🖼️</button>
+        <button class="icon-btn" onclick="send()">➔</button>
+      </div>
     </div>
   </div>
 </div>
@@ -361,195 +251,106 @@ let selectedFile = null;
 window.addEventListener('DOMContentLoaded', () => {
     renderHistory();
     if (chat.children.length === 0) {
-        addMessage("Welcome to EliteCore AI! How can I help you today?", "bot");
+        addMessage("Hello! I'm EliteCore. How can I help you today?", "bot");
     }
 });
 
-// History Logic
 function startNewChat() {
-    if (chat.children.length > 1) {
-        saveChatToHistory();
-    }
+    if (chat.children.length > 1) saveChatToHistory();
     chat.innerHTML = "";
-    addMessage("Started a fresh conversation. What's on your mind?", "bot");
+    addMessage("Started a fresh conversation.", "bot");
 }
 
 function saveChatToHistory() {
-    const messages = chat.innerHTML;
-    if (!messages.trim()) return;
-
     let history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
+    const firstUserMsg = document.querySelector(".msg.user");
+    const title = firstUserMsg ? firstUserMsg.innerText.substring(0, 20) + "..." : "Chat " + new Date().toLocaleTimeString();
     
-    // Create a title from the first user message
-    const firstUserMsg = Array.from(document.querySelectorAll(".msg.user")).shift();
-    const title = firstUserMsg ? firstUserMsg.innerText.replace("Edit", "").substring(0, 25) + "..." : "New Chat " + new Date().toLocaleTimeString();
-
-    const newEntry = {
-        id: Date.now(),
-        title: title,
-        html: messages
-    };
-
-    history.unshift(newEntry);
-    localStorage.setItem("elitecore_history", JSON.stringify(history.slice(0, 15)));
+    history.unshift({ id: Date.now(), title, html: chat.innerHTML });
+    localStorage.setItem("elitecore_history", JSON.stringify(history.slice(0, 10)));
     renderHistory();
 }
 
 function renderHistory() {
     const list = document.getElementById("chat-history-list");
     const history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
-    
-    if (history.length === 0) {
-        list.innerHTML = '<div style="color: #64748b; font-size: 12px; padding: 10px;">No recent chats</div>';
-        return;
-    }
-
     list.innerHTML = history.map(item => `
-        <div class="chat-item" onclick="loadChat(${item.id})">
-            ${item.title}
+        <div class="nav-item" onclick="loadChat(${item.id})">
+            <div class="nav-icon">💬</div>
+            <div class="nav-text">${item.title}</div>
         </div>
     `).join('');
 }
 
 function loadChat(id) {
     const history = JSON.parse(localStorage.getItem("elitecore_history") || "[]");
-    const chatEntry = history.find(item => item.id === id);
-    if (chatEntry) {
-        chat.innerHTML = chatEntry.html;
-        // Re-attach event listeners to new buttons if necessary
-        chat.scrollTop = chat.scrollHeight;
-    }
-}
-
-// UI Functions
-function showAnalyzing() {
-    const div = document.createElement("div");
-    div.id = "analyzing-bubble";
-    div.classList.add("msg", "bot");
-    div.innerHTML = `
-        <div class="analyzing-container">
-            <div class="gemini-pulse"></div>
-            <span>Analyzing...</span>
-        </div>
-    `;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-}
-
-function removeAnalyzing() {
-    const loader = document.getElementById("analyzing-bubble");
-    if (loader) loader.remove();
+    const item = history.find(i => i.id === id);
+    if (item) chat.innerHTML = item.html;
 }
 
 function addMessage(text, type) {
     const div = document.createElement("div");
     div.classList.add("msg", type);
-    
-    const textSpan = document.createElement("span");
-    // Only parse markdown if 'marked' is available
-    textSpan.innerHTML = typeof marked !== 'undefined' ? marked.parse(text) : text;
-    div.appendChild(textSpan);
-
-    if (type === "bot") {
-        const copyBtn = document.createElement("button");
-        copyBtn.innerText = "Copy";
-        copyBtn.className = "copy-btn";
-        copyBtn.onclick = () => {
-            const cleanText = textSpan.innerText;
-            navigator.clipboard.writeText(cleanText).then(() => {
-                copyBtn.innerText = "Copied!";
-                setTimeout(() => copyBtn.innerText = "Copy", 2000);
-            });
-        };
-        div.appendChild(copyBtn);
-    } else if (type === "user") {
-        const editBtn = document.createElement("button");
-        editBtn.innerText = "Edit";
-        editBtn.className = "edit-btn";
-        editBtn.onclick = () => {
-            const inputField = document.getElementById("input"); 
-            inputField.value = text;
-            inputField.focus();
-        };
-        div.appendChild(editBtn);
-    }
-
+    div.innerHTML = `<div>${typeof marked !== 'undefined' ? marked.parse(text) : text}</div>`;
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
 
-// Image Handling
-function handleImageSelection() {
-    const fileInput = document.getElementById('imageInput');
-    const previewContainer = document.getElementById('preview-container');
-    const previewImg = document.getElementById('image-preview');
-    
-    selectedFile = fileInput.files[0];
-    
-    if (selectedFile) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            previewImg.src = e.target.result;
-            previewContainer.style.display = "block";
-        };
-        reader.readAsDataURL(selectedFile);
-    }
+function showAnalyzing() {
+    const div = document.createElement("div");
+    div.id = "analyzing-bubble";
+    div.classList.add("msg", "bot");
+    div.innerHTML = `<div style="display:flex;align-items:center;gap:10px;"><div class="gemini-pulse"></div><span>EliteCore is thinking...</span></div>`;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
 }
 
-function clearImage() {
-    selectedFile = null;
-    document.getElementById('imageInput').value = "";
-    document.getElementById('preview-container').style.display = "none";
-}
-
-// Sending Logic
 async function send() {
     const input = document.getElementById("input");
     const text = input.value;
-    const file = selectedFile; 
-    
-    if (!text && !file) return;
+    if (!text && !selectedFile) return;
 
-    // 1. Add user message to UI
-    addMessage(text || "Analyzing uploaded image...", "user");
+    addMessage(text || "Analyzing image...", "user");
     input.value = "";
-
-    // 2. Show indicator
     showAnalyzing();
 
-    // 3. Process Image
     let base64Image = null;
-    if (file) {
-        const reader = new FileReader();
-        base64Image = await new Promise((resolve) => {
-            reader.onload = () => resolve(reader.result);
-            reader.readAsDataURL(file);
+    if (selectedFile) {
+        base64Image = await new Promise(r => {
+            const rd = new FileReader();
+            rd.onload = () => r(rd.result);
+            rd.readAsDataURL(selectedFile);
         });
     }
 
     try {
-        // 4. Send the request
         const res = await fetch("/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-                message: text,
-                image: base64Image 
-            })
+            body: JSON.stringify({ message: text, image: base64Image })
         });
-
         const data = await res.json();
-        removeAnalyzing(); 
+        document.getElementById("analyzing-bubble").remove();
         addMessage(data.reply, "bot");
-
-    } catch (err) {
-        removeAnalyzing();
-        addMessage("Connection error. Is the server running?", "bot");
+    } catch (e) {
+        document.getElementById("analyzing-bubble").remove();
+        addMessage("Error connecting to server.", "bot");
     }
+    selectedFile = null;
+    document.getElementById("preview-container").style.display = "none";
+}
 
-    clearImage();
+function handleImageSelection() {
+    selectedFile = document.getElementById('imageInput').files[0];
+    if (selectedFile) {
+        const rd = new FileReader();
+        rd.onload = (e) => {
+            document.getElementById('image-preview').src = e.target.result;
+            document.getElementById('preview-container').style.display = "block";
+        };
+        rd.readAsDataURL(selectedFile);
+    }
 }
 </script>
-
 </body>
 </html>
