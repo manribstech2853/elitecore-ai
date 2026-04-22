@@ -273,6 +273,45 @@ button:hover {
     justify-content: center;
   }
 }
+/* THE ANALYZING ANIMATION */
+.analyzing-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px;
+    color: #94a3b8;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+.gemini-pulse {
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(135deg, #4285f4, #9b51e0, #81c995);
+    border-radius: 50%;
+    position: relative;
+    animation: rotate-gradient 2s linear infinite;
+}
+
+.gemini-pulse::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 50%;
+    background: inherit;
+    animation: pulse-bloom 1.5s ease-out infinite;
+}
+
+@keyframes rotate-gradient {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse-bloom {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2.5); opacity: 0; }
+}
+
 </style>
 </head>
 
@@ -331,6 +370,29 @@ const chat = document.getElementById("chat");
     window.addEventListener('DOMContentLoaded', () => {
         addMessage("Welcome to EliteCore AI! How can I help you today?", "bot");
     });
+
+// Function to show the "Analyzing" state
+function showAnalyzing() {
+    const div = document.createElement("div");
+    div.id = "analyzing-bubble";
+    div.classList.add("msg", "bot");
+    
+    div.innerHTML = `
+        <div class="analyzing-container">
+            <div class="gemini-pulse"></div>
+            <span>Analyzing...</span>
+        </div>
+    `;
+    
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+// Function to remove it when the response arrives
+function removeAnalyzing() {
+    const loader = document.getElementById("analyzing-bubble");
+    if (loader) loader.remove();
+}
 
     function addMessage(text, type) {
     const div = document.createElement("div");
@@ -408,13 +470,9 @@ async function send() {
     addMessage(text || "Analyzing uploaded image...", "user");
     input.value = "";
 
-    // 2. Show 'Analyzing' indicator
-    const thinkingDiv = document.createElement("div");
-    thinkingDiv.id = "thinking-indicator";
-    thinkingDiv.className = "msg bot";
-    thinkingDiv.innerText = "EliteCore is analyzing...";
-    document.getElementById("chat").appendChild(thinkingDiv);
-    document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+    // 2. UPDATED: Show the animated Gemini-style indicator
+    // This replaces the manual thinkingDiv creation
+    showAnalyzing();
 
     // 3. Convert image to Base64 using FileReader API
     let base64Image = null;
@@ -439,21 +497,19 @@ async function send() {
 
         const data = await res.json();
 
-        // 5. Remove indicator and show reply
-        const indicator = document.getElementById("thinking-indicator");
-        if (indicator) indicator.remove();
+        // 5. UPDATED: Remove indicator using the helper function
+        removeAnalyzing(); 
         addMessage(data.reply, "bot");
 
     } catch (err) {
-        const indicator = document.getElementById("thinking-indicator");
-        if (indicator) indicator.remove();
+        // UPDATED: Ensure it is removed if an error occurs
+        removeAnalyzing();
         addMessage("Connection error. Is the server running?", "bot");
     }
 
     // 6. Reset the file state for the next message
     clearImage();
 }
-
 
 </script>
 
