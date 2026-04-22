@@ -1149,6 +1149,30 @@ async function send() {
     }
     clearImage();
 }
+function handleCredentialResponse(response) {
+    // This line decodes the secure "ID Token" from Google
+    const data = JSON.parse(atob(response.credential.split('.')[1]));
+    
+    // Hide the login screen
+    document.getElementById('auth-overlay').style.opacity = '0';
+    
+    setTimeout(() => {
+        document.getElementById('auth-overlay').style.display = 'none';
+        
+        // Update the Dashboard Header with your Name from Google
+        document.getElementById('user-display').innerText = data.name;
+        
+        // Update Account Status in Settings
+        document.getElementById('account-status').innerText = data.email;
+        document.getElementById('account-status').style.color = "#38bdf8";
+        
+        // Update the Sidebar Brand to your first name
+        const navTexts = document.querySelectorAll('.nav-text');
+        if (navTexts.length > 0) navTexts[0].innerText = data.given_name;
+
+        addMessage(`Welcome back, ${data.given_name}! Authentication successful.`, "bot");
+    }, 500);
+}
 </script>
 
 </body>
