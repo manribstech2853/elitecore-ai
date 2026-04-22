@@ -69,7 +69,7 @@ app.post("/chat", async (req, res) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "model": "openai/gpt-4o-mini", // Optimized for Vision and speed
+                "model": "openrouter/free", // Switch to the free router here
                 "messages": messages,
                 "temperature": 0.7
             })
