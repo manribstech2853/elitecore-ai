@@ -166,6 +166,26 @@ body {
     transform: scale(0.95);
 }
 
+/* EDIT BUTTON STYLES */
+.edit-btn {
+    align-self: flex-end;
+    margin-top: 5px;
+    padding: 3px 8px;
+    font-size: 10px;
+    background: rgba(0, 0, 0, 0.3); /* Slightly darker to distinguish from copy */
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border-color: #fbbf24; /* A nice amber/yellow glow for editing */
+}
 /* INPUT AREA FIXED */
 .input-box {
   display: flex;
@@ -315,13 +335,12 @@ const chat = document.getElementById("chat");
     const div = document.createElement("div");
     div.classList.add("msg", type);
     
-    // Create a container for the text to separate it from the button
     const textSpan = document.createElement("span");
     textSpan.innerText = text;
     div.appendChild(textSpan);
 
-    // Only add the copy button to bot responses
     if (type === "bot") {
+        // Copy button for the bot
         const copyBtn = document.createElement("button");
         copyBtn.innerText = "Copy";
         copyBtn.className = "copy-btn";
@@ -332,6 +351,21 @@ const chat = document.getElementById("chat");
             });
         };
         div.appendChild(copyBtn);
+    } else if (type === "user") {
+        // Edit button for the user
+        const editBtn = document.createElement("button");
+        editBtn.innerText = "Edit";
+        editBtn.className = "edit-btn";
+        editBtn.onclick = () => {
+            // This grabs your input field and puts the text back in
+            const inputField = document.getElementById("input"); 
+            inputField.value = text;
+            inputField.focus();
+            
+            // Optional: Scroll to the input box so the user sees it
+            inputField.scrollIntoView({ behavior: 'smooth' });
+        };
+        div.appendChild(editBtn);
     }
 
     chat.appendChild(div);
