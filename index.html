@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -440,6 +441,7 @@ input {
     <button onclick="toggleSettings()" style="margin-top:20px; width:100%; background:rgba(255,255,255,0.1); color:white; padding:10px; border-radius:8px; border:none; cursor:pointer;">Save Changes</button>
   </div>
 </div>
+
 
 <script>
 // --- Place this at the very beginning of your <script> (Line 445) ---
@@ -951,11 +953,7 @@ input {
     <h2 style="margin-bottom: 10px;">Welcome to EliteCore</h2>
     <p style="color: #94a3b8; margin-bottom: 30px;">Sign in to save your chat history</p>
     
-    <button class="google-btn" onclick="googleSignIn()">
-      <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" width="20">
-      Sign in with Google
-    </button>
-    
+    <div id="googleBtnContainer" style="margin-bottom: 15px; display: flex; justify-content: center;"></div>
     <div class="guest-link" onclick="enterAsGuest()">Continue as Guest</div>
   </div>
 </div>
@@ -1145,6 +1143,7 @@ async function send() {
         removeAnalyzing();
         addMessage(data.reply, "bot");
     } catch (err) {
+
         removeAnalyzing();
         addMessage("Connection error.", "bot");
     }
