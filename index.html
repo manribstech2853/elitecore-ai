@@ -293,6 +293,11 @@ button {
 const chat = document.getElementById("chat");
 let selectedFile = null;
 
+// This ensures the welcome message pops up when the page finishes loading
+window.addEventListener('DOMContentLoaded', () => {
+    addMessage("Welcome to EliteCore AI! How can I help you today?", "bot");
+});
+
 // Toggle function
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
