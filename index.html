@@ -27,7 +27,6 @@ body {
   overflow: hidden;
 }
 
-/* PARTICLES */
 #particles-bg {
   position: fixed;
   top: 0;
@@ -38,7 +37,7 @@ body {
 }
 
 .sidebar {
-  width: 68px; /* Slim by default */
+  width: 68px;
   background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(18px);
   display: flex;
@@ -52,7 +51,6 @@ body {
   overflow: hidden;
 }
 
-/* Sidebar expansion */
 .sidebar.expanded {
   width: 260px;
 }
@@ -93,7 +91,6 @@ body {
   pointer-events: none;
 }
 
-/* Corrected: Show text when class is 'expanded' */
 .sidebar.expanded .nav-text {
   opacity: 1;
 }
@@ -121,7 +118,6 @@ body {
   display: none;
 }
 
-/* Corrected: Show label when class is 'expanded' */
 .sidebar.expanded .history-label {
   display: block;
 }
@@ -146,7 +142,7 @@ body {
 
 .chat {
   flex: 1;
-  padding: 20px;
+  padding: 20px 20px 120px 20px; /* More padding for floating bar */
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -177,46 +173,110 @@ body {
   border: 1px solid rgba(56,189,248,0.3);
 }
 
+/* FLOATING INPUT BOX */
+.input-area {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 800px;
+  z-index: 10;
+}
+
 .input-box {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  background: rgba(15, 23, 42, 0.95);
-  flex-shrink: 0;
+  gap: 12px;
+  padding: 8px 16px;
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 32px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
 
 input {
   flex: 1;
-  min-width: 0;
   padding: 12px;
   border: none;
-  border-radius: 10px;
   outline: none;
-  background: rgba(255,255,255,0.05);
+  background: transparent;
   color: white;
+  font-size: 16px;
 }
 
-button {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 10px;
+.send-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
   background: #38bdf8;
+  border: none;
   cursor: pointer;
-  font-weight: bold;
-  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: 0.2s;
+  color: black;
+  font-size: 18px;
+}
+
+.send-btn:hover {
+  background: #7dd3fc;
+  transform: scale(1.05);
 }
 
 .icon-btn {
   width: 38px; height: 38px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 50%;
   cursor: pointer;
-  transition: 0.25s;
+  transition: 0.2s;
+  color: #94a3b8;
+}
+
+.icon-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+/* SETTINGS MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: #1e293b;
+  margin: 10% auto;
+  padding: 25px;
+  border: 1px solid rgba(56,189,248,0.3);
+  width: 400px;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.modal-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #38bdf8;
+  display: flex;
+  justify-content: space-between;
+}
+
+.close-modal { cursor: pointer; color: #64748b; }
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 @keyframes fade {
@@ -258,11 +318,7 @@ button {
   </div>
 
   <div class="sidebar-bottom">
-    <div class="nav-item">
-      <div class="nav-icon">❓</div>
-      <div class="nav-text">Help</div>
-    </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="toggleSettings()">
       <div class="nav-icon">⚙️</div>
       <div class="nav-text">Settings</div>
     </div>
@@ -277,15 +333,42 @@ button {
 
   <div id="chat" class="chat"></div>
 
-  <div class="input-box">
-    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
-    <div id="preview-container" style="display: none; padding: 10px; position: relative; width: fit-content;">
-      <img id="image-preview" src="" style="max-width: 150px; border-radius: 8px; border: 2px solid #007bff;">
-      <button onclick="clearImage()" style="position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; border: none; cursor: pointer; width: 25px; height: 25px;">×</button>
+  <div class="input-area">
+    <div class="input-box">
+      <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageSelection()">
+      <div class="icon-btn" onclick="document.getElementById('imageInput').click()">📎</div>
+      
+      <input id="input" placeholder="Ask EliteCore AI..." onkeypress="if(event.key === 'Enter') send()" />
+      
+      <button class="send-btn" onclick="send()">➤</button>
     </div>
-    <div class="icon-btn" onclick="document.getElementById('imageInput').click()">📎</div>
-    <input id="input" placeholder="Ask EliteCore AI..." onkeypress="if(event.key === 'Enter') send()" />
-    <button onclick="send()">Send</button>
+    
+    <div id="preview-container" style="display: none; padding: 10px; position: absolute; bottom: 70px; left: 0; background: rgba(15,23,42,0.9); border-radius: 12px; border: 1px solid #38bdf8;">
+      <img id="image-preview" src="" style="max-width: 100px; border-radius: 8px;">
+      <button onclick="clearImage()" style="position: absolute; top: -10px; right: -10px; background: red; color: white; border-radius: 50%; border: none; cursor: pointer; width: 20px; height: 20px;">×</button>
+    </div>
+  </div>
+</div>
+
+<div id="settingsModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span>Settings</span>
+      <span class="close-modal" onclick="toggleSettings()">×</span>
+    </div>
+    <div class="setting-row">
+      <span>AI Model</span>
+      <span style="color:#38bdf8">EliteCore v2.4</span>
+    </div>
+    <div class="setting-row">
+      <span>Dark Mode</span>
+      <span style="color:#22c55e">Enabled</span>
+    </div>
+    <div class="setting-row">
+      <span>Account</span>
+      <span style="color:#94a3b8">Pro Member</span>
+    </div>
+    <button onclick="toggleSettings()" style="margin-top:20px; width:100%; background:rgba(255,255,255,0.1); color:white; padding:10px; border-radius:8px; border:none; cursor:pointer;">Save Changes</button>
   </div>
 </div>
 
@@ -293,15 +376,18 @@ button {
 const chat = document.getElementById("chat");
 let selectedFile = null;
 
-// This ensures the welcome message pops up when the page finishes loading
 window.addEventListener('DOMContentLoaded', () => {
     addMessage("Welcome to EliteCore AI! How can I help you today?", "bot");
 });
 
-// Toggle function
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.toggle('expanded');
+}
+
+function toggleSettings() {
+    const modal = document.getElementById("settingsModal");
+    modal.style.display = (modal.style.display === "block") ? "none" : "block";
 }
 
 function startNewChat() {
